@@ -17,10 +17,10 @@ import {
 } from "@mui/icons-material";
 import { styled } from "@mui/system";
 
-const Thumbnail = styled("img")({
+/* const Thumbnail = styled("img")({
   objectFit: "cover",
-  height: "70%",
-  width: "70%",
+  height: "90%",
+  width: "90%",
    opacity: "1",
   borderRadius: "20px",
   transition: "all 0.3s",
@@ -29,7 +29,25 @@ const Thumbnail = styled("img")({
   
   },
    
+}); */
+const Thumbnail = styled("img")({
+  objectFit: "cover",
+  height: "90%",
+  width: "90%",
+  opacity: "1",
+  borderRadius: "20px",
+  transition: "all 0.3s",
+  filter: "grayscale(100%)",
+  "&.active": {
+    transform: "scale(1.1)",
+    filter: "none",
+  },
+  "&:hover": {
+    cursor: "pointer",
+  },
 });
+
+
 
 const MainImage = styled("img")({
   objectFit: "cover",
@@ -129,6 +147,7 @@ export default function ImageCarousel() {
   };
 
   return (
+   
     <Box sx={{ width: "100%" }}>
       <Grid container spacing={2} sx={{ height: "400px", width: "100%" }}>
         <Grid item xs={12} md={6}>
@@ -149,75 +168,65 @@ export default function ImageCarousel() {
               sx={{ height: "80%", maxWidth: "100%", objectFit: "cover" }}
             />
           </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "",
+            }}
+          >
+            <Box>
+              <IconButton onClick={handlePreviousClick}>
+                <ArrowBackIos />
+              </IconButton>
+            </Box>
+
+            <Box sx={{ paddingRight: "20px", paddingLeft: "20px" }}>
+              <ImageList cols={3} sx={{ justifyContent: "center" }}>
+                {images
+                  .slice(currentIndex, currentIndex + 3)
+                  .map((image, index) => (
+                    <ImageListItem
+                      key={index}
+                      onClick={() => handleThumbnailClick(currentIndex + index)}
+                    >
+                      <Thumbnail
+                        src={image.url}
+                        alt={image.title}
+                        className={
+                          currentIndex + index === currentIndex ? "active" : ""
+                        }
+                      />
+                    </ImageListItem>
+                  ))}
+              </ImageList>
+            </Box>
+
+            <Box>
+              <IconButton onClick={handleNextClick}>
+                <ArrowForwardIos />
+              </IconButton>
+            </Box>
+            <Box sx={{ paddingLeft: "20%" }}>
+              <IconButton
+                onClick={handlePlayPauseClick}
+                sx={{ backgroundColor: "#00ffff", borderRadius: "100%" }}
+              >
+                {isPlaying ? <Pause /> : <PlayArrow />}
+              </IconButton>
+            </Box>
+          </Box>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Box sx={{ textAlign: "center" }}>
+          <Box sx={{ textAlign: "center", paddingTop: "40px" }}>
             <h2>{images[currentIndex].title}</h2>
             <p>{images[currentIndex].details}</p>
           </Box>
         </Grid>
-      </Grid>
-
-      <Grid item xs={12} sx={{ height: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "80%",
-            height: "",
-          }}
-        >
-          <Box
-            sx={{
-              paddingBottom: "20px",
-            }}
-          >
-            <IconButton onClick={handlePreviousClick}>
-              <ArrowBackIos />
-            </IconButton>
-          </Box>
-    
-          <ImageList
-            cols={3}
-            sx={{ justifyContent: "center", paddingLeft: "40px" }}
-          >
-            {images
-              .slice(currentIndex, currentIndex + 3)
-              .map((image, index) => (
-                <ImageListItem
-                  key={index}
-                  onClick={() => handleThumbnailClick(currentIndex + index)}
-                >
-                  <Thumbnail
-                    src={image.url}
-                    alt={image.title}
-                    className={
-                      currentIndex + index === currentIndex ? "active" : ""
-                    }
-                  />
-                </ImageListItem>
-              ))}
-          </ImageList>
-          <Box sx={{
-              paddingBottom: "20px",
-              paddingRight:"60px"
-            }}>
-            <IconButton onClick={handleNextClick}>
-              <ArrowForwardIos />
-            </IconButton>
-          </Box>
-
-          <Box sx={{ paddingLeft: "20%", paddingBottom: "20px" }}>
-            <IconButton
-              onClick={handlePlayPauseClick}
-              sx={{ backgroundColor: "#00ffff", borderRadius: "100%" }}
-            >
-              {isPlaying ? <Pause /> : <PlayArrow />}
-            </IconButton>
-          </Box>
-        </Box>
       </Grid>
     </Box>
   );
