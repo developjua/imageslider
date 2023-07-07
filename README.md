@@ -1,6 +1,6 @@
 # ImageSlider
 Getting Started with vite create
-This project was bootstrapped with ReactJS, MaterialUI
+This project was bootstrapped with Typescript, ReactJS, MaterialUI
 Available Scripts
 
 In the project directory, you can run:
